@@ -1,4 +1,4 @@
-# Analysis of the Iris data set {style=text-align:center}
+<center><em># Analysis of the Iris data set</em></centre>
 
 Author: Ruairi McCool
 
