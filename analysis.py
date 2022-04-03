@@ -1,6 +1,7 @@
 # Performing analysis on Fisher's Iris dataset.
 
 # Pandas built-in module can be used to output dataframes:
+from lib2to3.pgen2.pgen import DFAState
 from matplotlib.colors import Colormap
 import pandas as pd
 import numpy as np
@@ -20,6 +21,10 @@ print("The minimum value for sepal length is: {}".format(z))
 x1 = np.max(irisData["1"])
 print("The maximum value for sepal length is: {}".format(x1))
 
+# x.to_csv('VariableSummaries.txt', sep='\t')
+# y.to_csv('VariableSummaries.txt', sep='\t')
+# z.to_csv('VariableSummaries.txt', sep='\t')
+# x1.to_csv('VariableSummaries.txt', sep='\t')
 
 
 # 'df.values' must be emphasised to create a new dataframe with column names & to avoid missing values:
@@ -29,7 +34,7 @@ df = pd.DataFrame(irisData.values, columns=["SepalLength", "SepalWidth", "PetalL
 # df.columns = ["SepalLength", "SepalWidth"]
 
 # Writing the dataframe from to a text file:
-df.to_csv('VariableSummaries.txt', sep='\t')
+# df.to_csv('VariableSummaries.txt', sep='\t')
 
 import seaborn as se
 import matplotlib.pyplot as plt
@@ -45,3 +50,22 @@ import matplotlib.pyplot as plt
 # se.scatterplot(x="PetalLength" "SepalLenght", y="PetalWidth" "SepalWidth", hue="Species", data=df)
 # plt.show()
 
+# Dividing the dataset based on species, in order to look at analyze them separately:
+iris_setosa=df.loc[df["Species"]=="Iris-setosa"]
+iris_virginica=df.loc[df["Species"]=="Iris-virginica"]
+iris_versicolor=df.loc[df["Species"]=="Iris-versicolor"]
+
+# Creating a few numpy variables to print some maths statistics:
+x = np.mean(iris_setosa)
+print("The mean of the sepal length is: {}".format(x))
+y = np.std(iris_setosa)
+print("The standard deviation of sepal length is: {}".format(y))
+z = np.min(iris_setosa)
+print("The minimum value for sepal length is: {}".format(z))
+x1 = np.max(iris_setosa)
+print("The maximum value for sepal length is: {}".format(x1))
+
+x.to_csv("VariableSummaries.txt", sep="\t")
+y.to_csv("VariableSummaries.txt", sep="\t")
+z.to_csv("VariableSummaries.txt", sep="\t")
+x1.to_csv("VariableSummaries.txt", sep="\t")
