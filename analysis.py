@@ -1,7 +1,6 @@
 # Performing analysis on Fisher's Iris dataset.
 
 # Pandas built-in module can be used to output dataframes:
-from lib2to3.pgen2.pgen import DFAState
 from matplotlib.colors import Colormap
 import pandas as pd
 import numpy as np
@@ -21,6 +20,14 @@ print("The minimum value for sepal length is: {}".format(z))
 x1 = np.max(irisData["1"])
 print("The maximum value for sepal length is: {}".format(x1))
 
+# https://stackoverflow.com/questions/64685561/how-to-write-print-statements-to-csv-file-in-python
+import csv 
+with open("VariableSummaries.txt", "w") as csv:
+    print("The mean of the sepal length is: {}".format(x), file=csv)
+    print("The standard deviation of sepal length is: {}".format(y), file=csv)
+    print("The minimum value of sepal length is: {}".format(z), file=csv)
+    print("The maximum value for sepal length is: {}".format(x1), file=csv)
+
 # x.to_csv('VariableSummaries.txt', sep='\t')
 # y.to_csv('VariableSummaries.txt', sep='\t')
 # z.to_csv('VariableSummaries.txt', sep='\t')
@@ -29,6 +36,7 @@ print("The maximum value for sepal length is: {}".format(x1))
 
 # 'df.values' must be emphasised to create a new dataframe with column names & to avoid missing values:
 df = pd.DataFrame(irisData.values, columns=["SepalLength", "SepalWidth", "PetalLength", "PetalWidth", "Species"])
+
 # print(df.head(12)) 
 # print(data.loc[:, []])
 # df.columns = ["SepalLength", "SepalWidth"]
@@ -50,22 +58,25 @@ import matplotlib.pyplot as plt
 # se.scatterplot(x="PetalLength" "SepalLenght", y="PetalWidth" "SepalWidth", hue="Species", data=df)
 # plt.show()
 
+# The “loc” functions use the index name of the row to display the particular row of the dataset. 
+# The “iloc” functions use the index integer of the row, which gives complete information about the row.
+# https://www.geeksforgeeks.org/python-basics-of-pandas-using-iris-dataset/ 
 # Dividing the dataset based on species, in order to look at analyze them separately:
 iris_setosa=df.loc[df["Species"]=="Iris-setosa"]
 iris_virginica=df.loc[df["Species"]=="Iris-virginica"]
 iris_versicolor=df.loc[df["Species"]=="Iris-versicolor"]
 
 # Creating a few numpy variables to print some maths statistics:
-x = np.mean(iris_setosa)
-print("The mean of the sepal length is: {}".format(x))
-y = np.std(iris_setosa)
-print("The standard deviation of sepal length is: {}".format(y))
-z = np.min(iris_setosa)
-print("The minimum value for sepal length is: {}".format(z))
-x1 = np.max(iris_setosa)
-print("The maximum value for sepal length is: {}".format(x1))
+x2 = np.mean(iris_setosa)
+print("THE mean of the sepal length is: {}".format(x2))
+y2 = np.std(iris_virginica)
+print("THE standard deviation of sepal length is: {}".format(y2))
+z2 = np.min(iris_setosa)
+print("THE minimum value for sepal length is: {}".format(z2))
+w = np.max(iris_setosa)
+print("THE maximum value for sepal length is: {}".format(w))
 
-x.to_csv("VariableSummaries.txt", sep="\t")
-y.to_csv("VariableSummaries.txt", sep="\t")
-z.to_csv("VariableSummaries.txt", sep="\t")
-x1.to_csv("VariableSummaries.txt", sep="\t")
+total = x2 + y2 + z2 + w
+total.to_csv("VariableSummaries.txt", sep="\t")
+
+
