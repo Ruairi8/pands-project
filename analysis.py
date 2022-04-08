@@ -79,4 +79,14 @@ print("THE maximum value for sepal length is: {}".format(w))
 total = x2 + y2 + z2 + w
 total.to_csv("VariableSummaries.txt", sep="\t")
 
+# https://eldoyle.github.io/PythonIntro/08-ReadingandWritingTextFiles/
+filename = "VariableSummaries.txt"
+file = open(filename, 'w')
+
+file.write("Sepal length mean is: {}".format(x2))
+file.write("Sepal length standard deviation is: {}".format(y2))
+file.write("Sepal length minimum value is: {}".format(z2))
+file.write("Sepal length maximum value is {}".format(w))
+
+file.close() 
 
