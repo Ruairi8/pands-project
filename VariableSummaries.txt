@@ -1,19 +1,16 @@
-Sepal length mean is: SepalLength    5.006
+Mean, Standard Deviation, Minimum & Maximim for Iris-Setosa
+Mean of SepalLength for all iris types: 5.843333333333335SepalLength    5.006
 SepalWidth     3.418
 PetalLength    1.464
-PetalWidth     0.244
-dtype: float64Sepal length standard deviation is: SepalLength    0.629489
-SepalWidth     0.319255
-PetalLength    0.546348
-PetalWidth     0.271890
-dtype: float64Sepal length minimum value is: SepalLength            4.3
+PetalWidth     0.244SepalLength    0.348947
+SepalWidth     0.377195
+PetalLength    0.171767
+PetalWidth     0.106132SepalLength            4.3
 SepalWidth             2.3
 PetalLength              1
 PetalWidth             0.1
-Species        Iris-setosa
-dtype: objectSepal length maximum value is SepalLength            5.8
+Species        Iris-setosaSepalLength            5.8
 SepalWidth             4.4
 PetalLength            1.9
 PetalWidth             0.6
 Species        Iris-setosa
-dtype: object
