@@ -1,16 +1,57 @@
 Mean, Standard Deviation, Minimum & Maximim for Iris-Setosa
-Mean of SepalLength for all iris types: 5.843333333333335SepalLength    5.006
+Mean of Sepal Length for all 3 irises is: 5.843333333333335
+Iris setosa mean lenghts and widths:
+SepalLength    5.006
 SepalWidth     3.418
 PetalLength    1.464
-PetalWidth     0.244SepalLength    0.348947
+PetalWidth     0.244
+Standard deviation of Sepal length for all 3 irises is : 0.8253012917851409
+Iris setosa standard deviation for lengths and widths:
+SepalLength    0.348947
 SepalWidth     0.377195
 PetalLength    0.171767
-PetalWidth     0.106132SepalLength            4.3
+PetalWidth     0.106132
+Minimum value of Sepal Length for all 3 irises is: 4.3
+Iris setosa minimum values for lengths and widths:
+SepalLength            4.3
 SepalWidth             2.3
 PetalLength              1
 PetalWidth             0.1
-Species        Iris-setosaSepalLength            5.8
+Species        Iris-setosa
+Maximum value of Sepal Length for all 3 irises is: 7.9
+Iris setosa maximum values for lengths and widths:
+SepalLength            5.8
 SepalWidth             4.4
 PetalLength            1.9
 PetalWidth             0.6
-Species        Iris-setosa
+Species        Iris-setosaIris virginica mathematical stats for lengths and widths:
+SepalLength    6.588
+SepalWidth     2.974
+PetalLength    5.552
+PetalWidth     2.026SepalLength    0.629489
+SepalWidth     0.319255
+PetalLength    0.546348
+PetalWidth     0.271890SepalLength               4.9
+SepalWidth                2.2
+PetalLength               4.5
+PetalWidth                1.4
+Species        Iris-virginicaSepalLength               7.9
+SepalWidth                3.8
+PetalLength               6.9
+PetalWidth                2.5
+Species        Iris-virginicaIris versicolor mathematical stats for lengths and widths:
+SepalLength    5.936
+SepalWidth     2.770
+PetalLength    4.260
+PetalWidth     1.326SepalLength    0.510983
+SepalWidth     0.310644
+PetalLength    0.465188
+PetalWidth     0.195765SepalLength                4.9
+SepalWidth                   2
+PetalLength                  3
+PetalWidth                   1
+Species        Iris-versicolorSepalLength                  7
+SepalWidth                 3.4
+PetalLength                5.1
+PetalWidth                 1.8
+Species        Iris-versicolor

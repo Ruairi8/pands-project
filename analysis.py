@@ -3,20 +3,21 @@
 # Pandas built-in module can be used to output dataframes:
 import pandas as pd
 import numpy as np
+from py import std
 # Importing the dataset to data frame format using pandas .read_csv():
 irisData = pd.read_csv('iris.data')
 
 # 'describe()' method outputs the count, standard deviation, mean, min & max and percentiles of a dataset:
 print(irisData.describe())
 # Creating a few numpy variables to print some maths statistics:
-x = np.mean(irisData["1"])
-print("The Mean Of The Sepal Length is: {}".format(x))
-y = np.std(irisData["1"])
-print("The Standard Deviation Of Sepal Length is: {}".format(y))
-z = np.min(irisData["1"])
-print("The Minimum Value For Sepal length is: {}".format(z))
-x1 = np.max(irisData["1"])
-print("The Maximum Value For Sepal Length Is: {}".format(x1))
+Mean = np.mean(irisData["1"])
+print("The Mean Of The Sepal Length is: {}".format(Mean))
+Std = np.std(irisData["1"])
+print("The Standard Deviation Of Sepal Length is: {}".format(Std))
+Min = np.min(irisData["1"])
+print("The Minimum Value For Sepal length is: {}".format(Min))
+Max = np.max(irisData["1"])
+print("The Maximum Value For Sepal Length Is: {}".format(Max))
 
 # 'df.values' must be emphasised to create a new dataframe with column names & to avoid missing values:
 df = pd.DataFrame(irisData.values, columns=["SepalLength", "SepalWidth", "PetalLength", "PetalWidth", "Species"])
@@ -32,14 +33,20 @@ iris_virginica=df.loc[df["Species"]=="Iris-virginica"]
 iris_versicolor=df.loc[df["Species"]=="Iris-versicolor"]
 
 # Creating a few numpy variables to print some maths statistics:
-x2 = np.mean(iris_setosa)
-print("THE mean of the sepal length is: {}".format(x2))
-y2 = np.std(iris_setosa)
-print("THE standard deviation of sepal length is: {}".format(y2))
-z2 = np.min(iris_setosa)
-print("THE minimum value for sepal length is: {}".format(z2))
-w = np.max(iris_setosa)
-print("THE maximum value for sepal length is: {}".format(w))
+a = np.mean(iris_setosa)
+print("THE mean of the sepal length is: {}".format(a))
+b = np.std(iris_setosa)
+c = np.min(iris_setosa)
+d = np.max(iris_setosa)
+a1 = np.mean(iris_virginica)
+b1 = np.std(iris_virginica)
+c1 = np.min(iris_virginica)
+d1 = np.max(iris_virginica)
+a2 = np.mean(iris_versicolor)
+b2 = np.std(iris_versicolor)
+c2 = np.min(iris_versicolor)
+d2 = np.max(iris_versicolor)
+
 
 
 # https://eldoyle.github.io/PythonIntro/08-ReadingandWritingTextFiles/
@@ -49,13 +56,25 @@ file = open(filename, 'w')
 file.write("Mean, Standard Deviation, Minimum & Maximim for Iris-Setosa\n")
 # https://www.w3resource.com/pandas/dataframe/dataframe-to_string.php
 # .to_string() 
-file.write("Mean of Sepal Length for all 3 irises: {}".format(str(x)))
-file.write(str(x2.to_string()))
-
-file.write(str(y2.to_string()))
-
-file.write(str(z2.to_string()))
-
-file.write(str(w.to_string()))
-
-
+file.write("Mean of Sepal Length for all 3 irises is: {}\n".format(str(Mean)))
+file.write("Iris setosa mean lenghts and widths:\n")
+file.write(str(a.to_string()))
+file.write("\nStandard deviation of Sepal length for all 3 irises is : {}\n".format(str(Std)))
+file.write("Iris setosa standard deviation for lengths and widths:\n")
+file.write(str(b.to_string()))
+file.write("\nMinimum value of Sepal Length for all 3 irises is: {}\n".format(str(Min)))
+file.write("Iris setosa minimum values for lengths and widths:\n")
+file.write(str(c.to_string()))
+file.write("\nMaximum value of Sepal Length for all 3 irises is: {}\n".format(str(Max)))
+file.write("Iris setosa maximum values for lengths and widths:\n")
+file.write(str(d.to_string()))
+file.write("Iris virginica mathematical stats for lengths and widths:\n")
+file.write(str(a1.to_string()))
+file.write(str(b1.to_string()))
+file.write(str(c1.to_string()))
+file.write(str(d1.to_string()))
+file.write("Iris versicolor mathematical stats for lengths and widths:\n")
+file.write(str(a2.to_string()))
+file.write(str(b2.to_string()))
+file.write(str(c2.to_string()))
+file.write(str(d2.to_string()))
