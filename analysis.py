@@ -87,3 +87,21 @@ file.write("\n\nMinimum values:\n")
 file.write(str(c2.to_string()))
 file.write("\n\nMaximum values:\n")
 file.write(str(d2.to_string()))
+
+
+# https://sebastianraschka.com/Articles/2014_python_lda.html#lda-in-5-steps
+from sklearn.preprocessing import LabelEncoder
+
+X = df[["SepalLength", "SepalWidth", "PetalLength", "PetalWidth"]].values
+y = df['Species'].values
+
+irisDict = {1: 'Setosa', 2: 'Versicolor', 3:'Virginica'}
+
+enc = LabelEncoder()
+label_encoder = enc.fit(y)
+y = label_encoder.transform(y) + 1
+
+mean_vectors = []
+for cl in range(1,4):
+    mean_vectors.append(np.mean(X[y==cl], axis=0))
+    print('Mean Vector class %s: %s\n' %(cl, mean_vectors[cl-1]))
