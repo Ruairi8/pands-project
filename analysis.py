@@ -4,6 +4,7 @@
 import pandas as pd
 import numpy as np
 from py import std
+from yaml import YAMLError
 # Importing the dataset to data frame format using pandas .read_csv():
 irisData = pd.read_csv('iris.data')
 
@@ -89,19 +90,42 @@ file.write("\n\nMaximum values:\n")
 file.write(str(d2.to_string()))
 
 
+
 # https://sebastianraschka.com/Articles/2014_python_lda.html#lda-in-5-steps
+# 'scikit-learn' and 'sklearn' refer to the same Python package. It is a Machine Learning package, 
+# that allows one to utilize classification, regression, clustering, dimensionality reduction etc. 
+# 'scikit-learn' is imported as 'sklearn', to avoid throwing up an error due to the hyphen. https://towardsdatascience.com/scikit-learn-vs-sklearn-6944b9dc1736
+# https://deepnote.com/@ndungu/Implementing-KNN-Algorithm-on-the-Iris-Dataset-58Fkk1AMQki-VJOJ3mA_Fg
 from sklearn.preprocessing import LabelEncoder
+# In Machine Learning techniques such as k-nearest-neighbours, data is split into training and testing groups:
+from sklearn.model_selection import train_test_split , KFold
+
+# '.iloc' gets rows & columns at index locations unlike '.loc' which identifies them by index labels.
+x = df.iloc[:, :-1]
+y = df.iloc[:, -1]
+# split the data into train and test sets:
+x_train, x_test, y_train, y_test= train_test_split(x, y, test_size= 0.2, shuffle= True, random_state= 0)
+# In numpy, '.asarray' method converts an input to an array. Unlike '.array', '.asarray' updates changes made to an array.
+x_train= np.asarray(x_train)
+y_train= np.asarray(y_train)
+
+x_test= np.asarray(x_test)
+y_test= np.asarray(y_test)
+print(f'training set size: {x_train.shape[0]} samples \ntest set size: {x_test.shape[0]} samples')
 
 X = df[["SepalLength", "SepalWidth", "PetalLength", "PetalWidth"]].values
-y = df['Species'].values
+Y = df['Species'].values
 
-irisDict = {1: 'Setosa', 2: 'Versicolor', 3:'Virginica'}
 
+# Experimenting with code from https://sebastianraschka.com/Articles/2014_python_lda.html#lda-in-5-steps
+# Creating an instance of labelencoder (part of the sklearn package).
 enc = LabelEncoder()
-label_encoder = enc.fit(y)
-y = label_encoder.transform(y) + 1
+# LabelEncoder.fit maps column strings to numerical values
+label_encoder = enc.fit(Y)
+# Assigns numerical values in the variable 'Y':
+Y = label_encoder.transform(YAMLError) + 1
 
 mean_vectors = []
 for cl in range(1,4):
-    mean_vectors.append(np.mean(X[y==cl], axis=0))
+    mean_vectors.append(np.mean(X[Y==cl], axis=0))
     print('Mean Vector class %s: %s\n' %(cl, mean_vectors[cl-1]))
