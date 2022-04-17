@@ -9,20 +9,20 @@ from yaml import YAMLError
 irisData = pd.read_csv('iris.data')
 
 # 'describe()' method outputs the count, standard deviation, mean, min & max and percentiles of a dataset:
-print(irisData.describe())
+#print(irisData.describe())
 # Creating a few numpy variables to print some maths statistics:
 Mean = np.mean(irisData["1"])
-print("The Mean Of The Sepal Length is: {}".format(Mean))
+#print("The Mean Of The Sepal Length is: {}".format(Mean))
 Std = np.std(irisData["1"])
-print("The Standard Deviation Of Sepal Length is: {}".format(Std))
+#print("The Standard Deviation Of Sepal Length is: {}".format(Std))
 Min = np.min(irisData["1"])
-print("The Minimum Value For Sepal length is: {}".format(Min))
+#print("The Minimum Value For Sepal length is: {}".format(Min))
 Max = np.max(irisData["1"])
-print("The Maximum Value For Sepal Length Is: {}".format(Max))
+#print("The Maximum Value For Sepal Length Is: {}".format(Max))
 
 # 'df.values' must be emphasised to create a new dataframe with column names & to avoid missing values:
 df = pd.DataFrame(irisData.values, columns=["SepalLength", "SepalWidth", "PetalLength", "PetalWidth", "Species"])
-print(df.head(12)) 
+print(df.head(30)) 
 
 
 # The “loc” functions use the index name of the row to display the particular row of the dataset. 
@@ -97,8 +97,10 @@ file.write(str(d2.to_string()))
 # 'scikit-learn' is imported as 'sklearn', to avoid throwing up an error due to the hyphen. https://towardsdatascience.com/scikit-learn-vs-sklearn-6944b9dc1736
 # https://deepnote.com/@ndungu/Implementing-KNN-Algorithm-on-the-Iris-Dataset-58Fkk1AMQki-VJOJ3mA_Fg
 from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import Normalizer
 # In Machine Learning techniques such as k-nearest-neighbours, data is split into training and testing groups:
 from sklearn.model_selection import train_test_split , KFold
+
 
 # '.iloc' gets rows & columns at index locations unlike '.loc' which identifies them by index labels.
 x = df.iloc[:, :-1]
@@ -106,16 +108,92 @@ y = df.iloc[:, -1]
 # split the data into train and test sets:
 x_train, x_test, y_train, y_test= train_test_split(x, y, test_size= 0.2, shuffle= True, random_state= 0)
 # In numpy, '.asarray' method converts an input to an array. Unlike '.array', '.asarray' updates changes made to an array.
-x_train= np.asarray(x_train)
-y_train= np.asarray(y_train)
+x_train = np.asarray(x_train)
+y_train = np.asarray(y_train)
 
-x_test= np.asarray(x_test)
-y_test= np.asarray(y_test)
+x_test = np.asarray(x_test)
+y_test = np.asarray(y_test)
 print(f'training set size: {x_train.shape[0]} samples \ntest set size: {x_test.shape[0]} samples')
 
 X = df[["SepalLength", "SepalWidth", "PetalLength", "PetalWidth"]].values
 Y = df['Species'].values
 
+# https://deepnote.com/@ndungu/Implementing-KNN-Algorithm-on-the-Iris-Dataset-58Fkk1AMQki-VJOJ3mA_Fg
+# Normalize the dataset
+scaler = Normalizer().fit(x_train) # the scaler is fitted to the training set
+normalized_x_train = scaler.transform(x_train) # the scaler is applied to the training set
+normalized_x_test = scaler.transform(x_test) # the scaler is applied to the test set
+print('x train before Normalization')
+print(x_train[0:5])
+print('\nx train after Normalization')
+print(normalized_x_train[0:5])
+
+
+# kNN step 1 Euclidean distance:
+def distance_ecu(x_train, x_test_point):
+  """
+  Input:
+    - x_train: corresponding to the training data
+    - x_test_point: corresponding to the test point
+
+  Output:
+    -distances: The distances between the test point and each point in the training data.
+
+  """
+  distances= []  ## create empty list called distances
+  for row in range(len(x_train)): ## Loop over the rows of x_train
+      current_train_point= x_train[row] #Get them point by point
+      current_distance= 0 ## initialize the distance by zero
+
+      for col in range(len(current_train_point)): ## Loop over the columns of the row
+          
+          current_distance += (current_train_point[col] - x_test_point[col]) **2
+          ## Or current_distance = current_distance + (x_train[i] - x_test_point[i])**2
+      current_distance= np.sqrt(current_distance)
+
+      distances.append(current_distance) ## Append the distances
+
+  # Store distances in a dataframe
+  distances= pd.DataFrame(data=distances,columns=['dist'])
+  return distances
+
+# Step 2 - finding the nearest neighbours:
+def nearest_neighbors(distance_point, K):
+    """
+    Input:
+        -distance_point: the distances between the test point and each point in the training data.
+        -K             : the number of neighbors
+
+    Output:
+        -df_nearest: the nearest K neighbors between the test point and the training data.
+
+    """
+
+    # Sort values using the sort_values function
+    df_nearest= distance_point.sort_values(by=['dist'], axis=0)
+
+    ## Take only the first K neighbors
+    df_nearest= df_nearest[:K]
+    return df_nearest
+
+# Step 3, classify the point based on a majority vote:
+def voting(df_nearest, y_train):
+    """
+    Input:
+        -df_nearest: dataframe contains the nearest K neighbors between the full training dataset and the test point.
+        -y_train: the labels of the training dataset.
+
+    Output:
+        -y_pred: the prediction based on Majority Voting
+
+    """
+
+    ## Use the Counter Object to get the labels with K nearest neighbors.
+    counter_vote= Counter(y_train[df_nearest.index])
+
+    y_pred= counter_vote.most_common()[0][0]   # Majority Voting
+
+    return y_pred
 
 # Experimenting with code from https://sebastianraschka.com/Articles/2014_python_lda.html#lda-in-5-steps
 # Creating an instance of labelencoder (part of the sklearn package).
