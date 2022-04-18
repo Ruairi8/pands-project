@@ -22,7 +22,7 @@ Max = np.max(irisData["1"])
 
 # 'df.values' must be emphasised to create a new dataframe with column names & to avoid missing values:
 df = pd.DataFrame(irisData.values, columns=["SepalLength", "SepalWidth", "PetalLength", "PetalWidth", "Species"])
-print(df.head(30)) 
+#print(df.head(30)) 
 
 
 # The “loc” functions use the index name of the row to display the particular row of the dataset. 
@@ -188,12 +188,81 @@ def voting(df_nearest, y_train):
 
     """
 
-    ## Use the Counter Object to get the labels with K nearest neighbors.
+    # Use the Counter Object to get the labels with K nearest neighbors.
+    from collections import Counter
     counter_vote= Counter(y_train[df_nearest.index])
 
     y_pred= counter_vote.most_common()[0][0]   # Majority Voting
 
     return y_pred
+
+#KNN Full Algorithm: Putting Everything Together
+def KNN_from_scratch(x_train, y_train, x_test, K):
+
+    """
+    Input:
+    -x_train: the full training dataset
+    -y_train: the labels of the training dataset
+    -x_test: the full test dataset
+    -K: the number of neighbors
+
+    Output:
+    -y_pred: the prediction for the whole test set based on Majority Voting.
+
+    """
+
+    y_pred=[]
+
+    ## Loop over all the test set and perform the three steps
+    for x_test_point in x_test:
+      distance_point  = distance_ecu(x_train, x_test_point)  ## Step 1
+      df_nearest_point= nearest_neighbors(distance_point, K)  ## Step 2
+      y_pred_point    = voting(df_nearest_point, y_train) ## Step 3
+      y_pred.append(y_pred_point)
+
+    return y_pred  
+
+#Test the KNN Algorithm on the test dataset
+K=3
+y_pred_scratch= KNN_from_scratch(normalized_x_train, y_train, normalized_x_test, K)
+print(y_pred_scratch)
+
+from sklearn.neighbors import KNeighborsClassifier
+knn=KNeighborsClassifier(K)
+knn.fit(normalized_x_train, y_train)
+y_pred_sklearn= knn.predict(normalized_x_test)
+print(y_pred_sklearn)
+
+print(np.array_equal(y_pred_sklearn, y_pred_scratch))
+
+from sklearn.metrics import accuracy_score
+print(f'The accuracy of our implementation is {accuracy_score(y_test, y_pred_scratch)}')
+print(f'The accuracy of sklearn implementation is {accuracy_score(y_test, y_pred_sklearn)}')
+
+#Perform Hyper-parameter Tuning using K-fold Cross Validation
+n_splits= 4 ## Choose the number of splits
+kf= KFold(n_splits= n_splits) ## Call the K Fold function
+
+accuracy_k= [] ## Keep track of the accuracy for each K
+k_values= list(range(1,30,2)) ## Search for the best value of K
+
+for k in k_values: ## Loop over the K values
+  accuracy_fold= 0
+  for normalized_x_train_fold_idx, normalized_x_valid_fold_idx in  kf.split(normalized_x_train): ## Loop over the splits
+      normalized_x_train_fold= normalized_x_train[normalized_x_train_fold_idx] ## fetch the values
+      y_train_fold= y_train[normalized_x_train_fold_idx]
+
+      normalized_x_test_fold= normalized_x_train[normalized_x_valid_fold_idx]
+      y_valid_fold= y_train[normalized_x_valid_fold_idx]
+      y_pred_fold= KNN_from_scratch(normalized_x_train_fold, y_train_fold, normalized_x_test_fold, k)
+
+      accuracy_fold+= accuracy_score (y_pred_fold, y_valid_fold) ## Accumulate the accuracy
+  accuracy_fold= accuracy_fold/ n_splits ## Divide by the number of splits
+  accuracy_k.append(accuracy_fold)
+
+print(f'The accuracy for each K value was {list ( zip (accuracy_k, k_values))}') #Creates a tuple with accuracy corresponding to k value
+print(f'Best accuracy was {np.max(accuracy_k)}, which corresponds to a value of K= {k_values[np.argmax(accuracy_k)]}')
+
 
 # Experimenting with code from https://sebastianraschka.com/Articles/2014_python_lda.html#lda-in-5-steps
 # Creating an instance of labelencoder (part of the sklearn package).
