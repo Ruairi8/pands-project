@@ -96,6 +96,7 @@ file.write(str(d2.to_string()))
 # that allows one to utilize classification, regression, clustering, dimensionality reduction etc. 
 # 'scikit-learn' is imported as 'sklearn', to avoid throwing up an error due to the hyphen. https://towardsdatascience.com/scikit-learn-vs-sklearn-6944b9dc1736
 # https://deepnote.com/@ndungu/Implementing-KNN-Algorithm-on-the-Iris-Dataset-58Fkk1AMQki-VJOJ3mA_Fg
+# https://docs.python.org/3/library/index.html
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import Normalizer
 # In Machine Learning techniques such as k-nearest-neighbours, data is split into training and testing groups:
@@ -116,13 +117,13 @@ y_test = np.asarray(y_test)
 print(f'training set size: {x_train.shape[0]} samples \ntest set size: {x_test.shape[0]} samples')
 
 X = df[["SepalLength", "SepalWidth", "PetalLength", "PetalWidth"]].values
-Y = df['Species'].values
+Y = df[['Species']].values
 
-# https://deepnote.com/@ndungu/Implementing-KNN-Algorithm-on-the-Iris-Dataset-58Fkk1AMQki-VJOJ3mA_Fg
-# Normalize the dataset
-scaler = Normalizer().fit(x_train) # the scaler is fitted to the training set
-normalized_x_train = scaler.transform(x_train) # the scaler is applied to the training set
-normalized_x_test = scaler.transform(x_test) # the scaler is applied to the test set
+# .fit() method calculates the mean and standard deviation:
+scaler = Normalizer().fit(x_train) 
+# Standardisation involves scaling the dataset so it will have a mean of 0 and a standard deviation of 1:
+normalized_x_train = scaler.transform(x_train) 
+normalized_x_test = scaler.transform(x_test) 
 print('x train before Normalization')
 print(x_train[0:5])
 print('\nx train after Normalization')
@@ -140,21 +141,24 @@ def distance_ecu(x_train, x_test_point):
     -distances: The distances between the test point and each point in the training data.
 
   """
-  distances= []  ## create empty list called distances
-  for row in range(len(x_train)): ## Loop over the rows of x_train
-      current_train_point= x_train[row] #Get them point by point
-      current_distance= 0 ## initialize the distance by zero
-
-      for col in range(len(current_train_point)): ## Loop over the columns of the row
-          
-          current_distance += (current_train_point[col] - x_test_point[col]) **2
-          ## Or current_distance = current_distance + (x_train[i] - x_test_point[i])**2
-      current_distance= np.sqrt(current_distance)
-
-      distances.append(current_distance) ## Append the distances
+  # Creating an empty array:
+  distances = []  
+  # Loops through the rows in x_train:
+  for row in range(len(x_train)): 
+      current_train_point = x_train[row] 
+      # Initializing to zero:
+      current_distance = 0 
+      # Loops through the columns in defined variable 'current_train_point':
+      for col in range(len(current_train_point)): 
+          current_distance += (current_train_point[col] - x_test_point[col]) ** 2
+      # When there is nothing else to add to 'current_distance', the code below is run. 'np.sqrt()' outputs
+      # the square root of every element in the array. The output array is also the same shape:
+      current_distance = np.sqrt(current_distance)
+      # Appending the current_distances to the array 'distances' defined earlier:
+      distances.append(current_distance) 
 
   # Store distances in a dataframe
-  distances= pd.DataFrame(data=distances,columns=['dist'])
+  distances = pd.DataFrame(data=distances, columns=['dist'])
   return distances
 
 # Step 2 - finding the nearest neighbours:
@@ -169,31 +173,28 @@ def nearest_neighbors(distance_point, K):
 
     """
 
-    # Sort values using the sort_values function
-    df_nearest= distance_point.sort_values(by=['dist'], axis=0)
+# Sort values using the sort_values function. Since version 0.23.0: "Allow specifying index or column level names."
+# Here it is choosing index with the label 'dist':
+    df_nearest = distance_point.sort_values(by=['dist'], axis=0)
 
-    ## Take only the first K neighbors
-    df_nearest= df_nearest[:K]
+    # Take only the first K neighbors. [:K] outputs everything up to but not including element K in an array.
+    # 'df_nearest' dataframe will have the nearest K neighbors between the full training dataset and the test point:
+    df_nearest = df_nearest[:K]
     return df_nearest
 
 # Step 3, classify the point based on a majority vote:
 def voting(df_nearest, y_train):
     """
-    Input:
-        -df_nearest: dataframe contains the nearest K neighbors between the full training dataset and the test point.
-        -y_train: the labels of the training dataset.
-
-    Output:
-        -y_pred: the prediction based on Majority Voting
-
+    Output: -y_pred: the prediction based on Majority Voting
     """
-
-    # Use the Counter Object to get the labels with K nearest neighbors.
+    # Use the Counter Object to get the labels with K nearest neighbors:
     from collections import Counter
-    counter_vote= Counter(y_train[df_nearest.index])
-
-    y_pred= counter_vote.most_common()[0][0]   # Majority Voting
-
+    # Elements stored as dictionary keys and their counts stored as dictionary values:
+    counter_vote = Counter(y_train[df_nearest.index])
+    # 'most_common' outputs what is found the highest number of times. Slicing is used to get whats at index 0
+    # in the dictionary, [0][0] returns the first value contained in the first key:
+    y_pred = counter_vote.most_common()[0][0]
+    # 'return' returns a result to the caller:
     return y_pred
 
 #KNN Full Algorithm: Putting Everything Together
@@ -213,17 +214,17 @@ def KNN_from_scratch(x_train, y_train, x_test, K):
 
     y_pred=[]
 
-    ## Loop over all the test set and perform the three steps
+    # Loop over all the test set and perform the three steps
     for x_test_point in x_test:
-      distance_point  = distance_ecu(x_train, x_test_point)  ## Step 1
-      df_nearest_point= nearest_neighbors(distance_point, K)  ## Step 2
-      y_pred_point    = voting(df_nearest_point, y_train) ## Step 3
+      distance_point  = distance_ecu(x_train, x_test_point)  # Step 1
+      df_nearest_point= nearest_neighbors(distance_point, K)  # Step 2
+      y_pred_point    = voting(df_nearest_point, y_train) # Step 3
       y_pred.append(y_pred_point)
 
     return y_pred  
 
 #Test the KNN Algorithm on the test dataset
-K=3
+K = 3
 y_pred_scratch= KNN_from_scratch(normalized_x_train, y_train, normalized_x_test, K)
 print(y_pred_scratch)
 
@@ -240,24 +241,24 @@ print(f'The accuracy of our implementation is {accuracy_score(y_test, y_pred_scr
 print(f'The accuracy of sklearn implementation is {accuracy_score(y_test, y_pred_sklearn)}')
 
 #Perform Hyper-parameter Tuning using K-fold Cross Validation
-n_splits= 4 ## Choose the number of splits
-kf= KFold(n_splits= n_splits) ## Call the K Fold function
+n_splits = 4 # Choose the number of splits
+kf= KFold(n_splits= n_splits) #Call the K Fold function
 
-accuracy_k= [] ## Keep track of the accuracy for each K
-k_values= list(range(1,30,2)) ## Search for the best value of K
+accuracy_k = [] # Keep track of the accuracy for each K
+k_values = list(range(1,30,2)) ## Search for the best value of K
 
-for k in k_values: ## Loop over the K values
-  accuracy_fold= 0
+for k in k_values: #Loop over the K values
+  accuracy_fold = 0
   for normalized_x_train_fold_idx, normalized_x_valid_fold_idx in  kf.split(normalized_x_train): ## Loop over the splits
       normalized_x_train_fold= normalized_x_train[normalized_x_train_fold_idx] ## fetch the values
-      y_train_fold= y_train[normalized_x_train_fold_idx]
+      y_train_fold = y_train[normalized_x_train_fold_idx]
 
-      normalized_x_test_fold= normalized_x_train[normalized_x_valid_fold_idx]
-      y_valid_fold= y_train[normalized_x_valid_fold_idx]
-      y_pred_fold= KNN_from_scratch(normalized_x_train_fold, y_train_fold, normalized_x_test_fold, k)
+      normalized_x_test_fold = normalized_x_train[normalized_x_valid_fold_idx]
+      y_valid_fold = y_train[normalized_x_valid_fold_idx]
+      y_pred_fold = KNN_from_scratch(normalized_x_train_fold, y_train_fold, normalized_x_test_fold, k)
 
-      accuracy_fold+= accuracy_score (y_pred_fold, y_valid_fold) ## Accumulate the accuracy
-  accuracy_fold= accuracy_fold/ n_splits ## Divide by the number of splits
+      accuracy_fold += accuracy_score (y_pred_fold, y_valid_fold) ## Accumulate the accuracy
+  accuracy_fold = accuracy_fold/ n_splits ## Divide by the number of splits
   accuracy_k.append(accuracy_fold)
 
 print(f'The accuracy for each K value was {list ( zip (accuracy_k, k_values))}') #Creates a tuple with accuracy corresponding to k value
