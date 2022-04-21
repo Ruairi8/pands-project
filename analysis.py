@@ -22,16 +22,16 @@ Max = np.max(irisData["1"])
 
 # 'df.values' must be emphasised to create a new dataframe with column names & to avoid missing values:
 df = pd.DataFrame(irisData.values, columns=["SepalLength", "SepalWidth", "PetalLength", "PetalWidth", "Species"])
-#print(df.head(30)) 
+print(df.head(30)) 
 
 
 # The “loc” functions use the index name of the row to display the particular row of the dataset. 
 # The “iloc” functions use the index integer of the row, which gives complete information about the row.
 # https://www.geeksforgeeks.org/python-basics-of-pandas-using-iris-dataset/ 
 # Dividing the dataset based on species, in order to look at analyze them separately:
-iris_setosa=df.loc[df["Species"]=="Iris-setosa"]
-iris_virginica=df.loc[df["Species"]=="Iris-virginica"]
-iris_versicolor=df.loc[df["Species"]=="Iris-versicolor"]
+iris_setosa = df.loc[df["Species"]=="Iris-setosa"]
+iris_virginica = df.loc[df["Species"]=="Iris-virginica"]
+iris_versicolor = df.loc[df["Species"]=="Iris-versicolor"]
 
 # Creating a few numpy variables to print some maths statistics:
 a = np.mean(iris_setosa)
@@ -106,7 +106,7 @@ from sklearn.model_selection import train_test_split , KFold
 # '.iloc' gets rows & columns at index locations unlike '.loc' which identifies them by index labels.
 x = df.iloc[:, :-1]
 y = df.iloc[:, -1]
-# split the data into train and test sets:
+# split the data into training and testing sets:
 x_train, x_test, y_train, y_test= train_test_split(x, y, test_size= 0.2, shuffle= True, random_state= 0)
 # In numpy, '.asarray' method converts an input to an array. Unlike '.array', '.asarray' updates changes made to an array.
 x_train = np.asarray(x_train)
@@ -114,10 +114,9 @@ y_train = np.asarray(y_train)
 
 x_test = np.asarray(x_test)
 y_test = np.asarray(y_test)
+# f-string literal to output the number of samples in the traning and testing sets using the '.shape()' method:
 print(f'training set size: {x_train.shape[0]} samples \ntest set size: {x_test.shape[0]} samples')
 
-X = df[["SepalLength", "SepalWidth", "PetalLength", "PetalWidth"]].values
-Y = df[['Species']].values
 
 # .fit() method calculates the mean and standard deviation:
 scaler = Normalizer().fit(x_train) 
@@ -130,7 +129,8 @@ print('\nx train after Normalization')
 print(normalized_x_train[0:5])
 
 
-# kNN step 1 Euclidean distance:
+# kNN step 1 Euclidean distance. Used to find distance between points, its formula is the square root of 
+# (x2-x1) squared + (y2-y1) squared:
 def distance_ecu(x_train, x_test_point):
   """
   Input:
@@ -229,9 +229,9 @@ y_pred_scratch= KNN_from_scratch(normalized_x_train, y_train, normalized_x_test,
 print(y_pred_scratch)
 
 from sklearn.neighbors import KNeighborsClassifier
-knn=KNeighborsClassifier(K)
+knn = KNeighborsClassifier(K)
 knn.fit(normalized_x_train, y_train)
-y_pred_sklearn= knn.predict(normalized_x_test)
+y_pred_sklearn = knn.predict(normalized_x_test)
 print(y_pred_sklearn)
 
 print(np.array_equal(y_pred_sklearn, y_pred_scratch))
@@ -242,10 +242,10 @@ print(f'The accuracy of sklearn implementation is {accuracy_score(y_test, y_pred
 
 #Perform Hyper-parameter Tuning using K-fold Cross Validation
 n_splits = 4 # Choose the number of splits
-kf= KFold(n_splits= n_splits) #Call the K Fold function
+kf = KFold(n_splits = n_splits) #Call the K Fold function
 
 accuracy_k = [] # Keep track of the accuracy for each K
-k_values = list(range(1,30,2)) ## Search for the best value of K
+k_values = list(range(1,30,2)) # Search for the best value of K
 
 for k in k_values: #Loop over the K values
   accuracy_fold = 0
@@ -266,6 +266,8 @@ print(f'Best accuracy was {np.max(accuracy_k)}, which corresponds to a value of 
 
 
 # Experimenting with code from https://sebastianraschka.com/Articles/2014_python_lda.html#lda-in-5-steps
+X = df[["SepalLength", "SepalWidth", "PetalLength", "PetalWidth"]].values
+Y = df[['Species']].values
 # Creating an instance of labelencoder (part of the sklearn package).
 enc = LabelEncoder()
 # LabelEncoder.fit maps column strings to numerical values
