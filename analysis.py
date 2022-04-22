@@ -22,6 +22,9 @@ Max = np.max(irisData["1"])
 
 # 'df.values' must be emphasised to create a new dataframe with column names & to avoid missing values:
 df = pd.DataFrame(irisData.values, columns=["SepalLength", "SepalWidth", "PetalLength", "PetalWidth", "Species"])
+print(df["Species"].unique())
+Size = df.groupby("Species").size()
+print(df.groupby("Species").size())
 print(df.head(30)) 
 
 
@@ -56,7 +59,7 @@ file = open(filename, 'w')
 # .write() only takes a string as an argument. https://stackoverflow.com/questions/41454921/typeerror-write-argument-must-be-str-not-list
 file.write("A summary of the variables - Iris Setosa, Iris Virginica & Iris Versicolor\n")
 # https://www.w3resource.com/pandas/dataframe/dataframe-to_string.php
-# .to_string() 
+file.write("\n\nThe number of rows in each Iris: {}\n".format(str(Size)))
 file.write("\nMean of Sepal Length for all 3 irises is: {}\n".format(str(Mean)))
 file.write("\nStandard deviation of Sepal length for all 3 irises is : {}\n".format(str(Std)))
 file.write("\nMinimum value of Sepal Length for all 3 irises is: {}\n".format(str(Min)))

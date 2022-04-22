@@ -1,5 +1,11 @@
 A summary of the variables - Iris Setosa, Iris Virginica & Iris Versicolor
 
+The number of rows in each Iris is: Species
+Iris-setosa        50
+Iris-versicolor    50
+Iris-virginica     50
+dtype: int64
+
 Mean of Sepal Length for all 3 irises is: 5.843333333333335
 
 Standard deviation of Sepal length for all 3 irises is : 0.8253012917851409

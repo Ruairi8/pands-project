@@ -1,0 +1,19 @@
+# Outputting a scatter plot of 2 variables Setosa and Versicolor:
+# https://machinelearninghd.com/iris-dataset-uci-machine-learning-repository-project/
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy
+iris = pd.read_csv("iris.data")
+# '.plot' method allows u to define the type of graph u want using 'kind='. x and y parameters define what columns
+# you want to plot from a dataset. Double equal sign asks a question is something something rather than setting
+# it equal to something:
+fig = iris[iris[' 5']=='Iris-setosa'].plot(kind='scatter',x="1",y=" 2",color='orange', label='Setosa')
+iris[iris[' 5']=='Iris-versicolor'].plot(kind='scatter',x="1",y=" 2",color='blue', label='versicolor',ax=fig)
+fig.set_xlabel("Sepal Length")
+fig.set_ylabel("Sepal Width")
+fig.set_title("Sepal Length VS Width")
+fig=plt.gcf()
+fig.set_size_inches(12,8)
+
+plt.savefig('scatterPlot1')
+plt.show()
