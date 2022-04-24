@@ -1,6 +1,7 @@
 A summary of the variables - Iris Setosa, Iris Virginica & Iris Versicolor
 
-The number of rows in each Iris is: Species
+
+The number of rows in each Iris: Species
 Iris-setosa        50
 Iris-versicolor    50
 Iris-virginica     50
