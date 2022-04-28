@@ -8,17 +8,22 @@ from yaml import YAMLError
 # Importing the dataset to data frame format using pandas .read_csv():
 irisData = pd.read_csv('iris.data')
 
-# 'describe()' method outputs the count, standard deviation, mean, min & max and percentiles of a dataset:
-#print(irisData.describe())
-# Creating a few numpy variables to print some maths statistics:
+# 'describe()' method outputs the count, standard deviation, mean, min & max and percentiles of a dataset. Here,
+# I am creating a few numpy variables to output mathematical statistics of the data set to a file:
 Mean = np.mean(irisData["1"])
-#print("The Mean Of The Sepal Length is: {}".format(Mean))
+Percentile1 = np.percentile(irisData["1"], 25)
+Percentile2 = np.percentile(irisData["1"], 75)
 Std = np.std(irisData["1"])
-#print("The Standard Deviation Of Sepal Length is: {}".format(Std))
 Min = np.min(irisData["1"])
-#print("The Minimum Value For Sepal length is: {}".format(Min))
 Max = np.max(irisData["1"])
-#print("The Maximum Value For Sepal Length Is: {}".format(Max))
+
+Mean2 = np.mean(irisData[" 2"])
+Percentile1a = np.percentile(irisData[" 2"], 25)
+Percentile2a = np.percentile(irisData[" 2"], 75)
+Std2 = np.std(irisData[" 2"])
+Min2 = np.min(irisData[" 2"])
+Max2 = np.max(irisData[" 2"])
+
 
 # 'df.values' must be emphasised to create a new dataframe with column names & to avoid missing values:
 df = pd.DataFrame(irisData.values, columns=["SepalLength", "SepalWidth", "PetalLength", "PetalWidth", "Species"])
@@ -62,9 +67,17 @@ file.write("A summary of the variables - Iris Setosa, Iris Virginica & Iris Vers
 # https://www.w3resource.com/pandas/dataframe/dataframe-to_string.php
 file.write("\n\nThe number of rows in each Iris: {}\n".format(str(Size)))
 file.write("\nMean of Sepal Length for all 3 irises is: {}\n".format(str(Mean)))
-file.write("\nStandard deviation of Sepal length for all 3 irises is : {}\n".format(str(Std)))
+file.write("\nThe 25th percential of Sepal Length for all 3 irises is: {}\n".format(Percentile1))
+file.write("\nThe 75th percentile of Sepal Length for all 3 irises is: {}\n".format(Percentile2))
+file.write("\nStandard deviation of Sepal Length for all 3 irises is : {}\n".format(str(Std)))
 file.write("\nMinimum value of Sepal Length for all 3 irises is: {}\n".format(str(Min)))
 file.write("\nMaximum value of Sepal Length for all 3 irises is: {}\n".format(str(Max)))
+file.write("\nMean of Sepal width for all 3 irises is: {}\n".format(str(Mean2)))
+file.write("\nThe 25th percential of Sepal Width for all 3 irises is: {}\n".format(Percentile1a))
+file.write("\nThe 75th percentile of Sepal Width for all 3 irises is: {}\n".format(Percentile2a))
+file.write("\nStandard deviation of Sepal Width for all 3 irises is : {}\n".format(str(Std2)))
+file.write("\nMinimum value of Sepal Width for all 3 irises is: {}\n".format(str(Min2)))
+file.write("\nMaximum value of Sepal Width for all 3 irises is: {}\n".format(str(Max2)))
 file.write("\nIris setosa mathematical stats for lengths and widths:")
 file.write("\nMean values:\n")
 file.write(str(a.to_string()))
@@ -201,7 +214,7 @@ def voting(df_nearest, y_train):
     # 'return' returns a result to the caller:
     return y_pred
 
-#KNN Full Algorithm: Putting Everything Together
+# KNN Full Algorithm: Putting Everything Together
 def KNN_from_scratch(x_train, y_train, x_test, K):
 
     """
@@ -218,11 +231,14 @@ def KNN_from_scratch(x_train, y_train, x_test, K):
 
     y_pred = []
 
-    # Loop over all the test set and perform the three steps
+    # Loop over all the test set and perform the three steps kNN steps
     for x_test_point in x_test:
-      distance_point  = distance_ecu(x_train, x_test_point)  # Step 1
-      df_nearest_point= nearest_neighbors(distance_point, K)  # Step 2
-      y_pred_point    = voting(df_nearest_point, y_train) # Step 3
+      # Calculating euclidean distance between the training set point, and the testing set point:
+      distance_point = distance_ecu(x_train, x_test_point)  
+      # Calculating the number of K points:
+      df_nearest_point = nearest_neighbors(distance_point, K)
+      # Getting the variable with the most data points:
+      y_pred_point = voting(df_nearest_point, y_train) 
       y_pred.append(y_pred_point)
 
     return y_pred  

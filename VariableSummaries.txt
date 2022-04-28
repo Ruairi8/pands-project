@@ -9,11 +9,27 @@ dtype: int64
 
 Mean of Sepal Length for all 3 irises is: 5.843333333333335
 
-Standard deviation of Sepal length for all 3 irises is : 0.8253012917851409
+The 25th percential of Sepal Length for all 3 irises is: 5.1
+
+The 75th percentile of Sepal Length for all 3 irises is: 6.4
+
+Standard deviation of Sepal Length for all 3 irises is : 0.8253012917851409
 
 Minimum value of Sepal Length for all 3 irises is: 4.3
 
 Maximum value of Sepal Length for all 3 irises is: 7.9
+
+Mean of Sepal width for all 3 irises is: 3.0540000000000007
+
+The 25th percential of Sepal Width for all 3 irises is: 2.8
+
+The 75th percentile of Sepal Width for all 3 irises is: 3.3
+
+Standard deviation of Sepal Width for all 3 irises is : 0.4321465800705435
+
+Minimum value of Sepal Width for all 3 irises is: 2.0
+
+Maximum value of Sepal Width for all 3 irises is: 4.4
 
 Iris setosa mathematical stats for lengths and widths:
 Mean values:
