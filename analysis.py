@@ -44,7 +44,6 @@ iris_versicolor = df.loc[df["Species"]=="Iris-versicolor"]
 
 # Creating a few numpy variables to print some maths statistics:
 a = np.mean(iris_setosa)
-#print("THE mean of the sepal length is: {}".format(a))
 b = np.std(iris_setosa)
 c = np.min(iris_setosa)
 d = np.max(iris_setosa)
@@ -123,7 +122,8 @@ from sklearn.model_selection import train_test_split , KFold
 # '.iloc' gets rows & columns at index locations unlike '.loc' which identifies them by index labels.
 x = df.iloc[:, :-1]
 y = df.iloc[:, -1]
-# split the data into training and testing sets:
+# split the data into training and testing sets, test_size of 0.2 means 20% of data points used for testing and so the 
+# other 80% will be for training:
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size= 0.2, shuffle= True, random_state= 0)
 # In numpy, '.asarray' method converts an input to an array. Unlike '.array', '.asarray' updates changes made to an array.
 x_train = np.asarray(x_train)
@@ -243,24 +243,32 @@ def KNN_from_scratch(x_train, y_train, x_test, K):
 
     return y_pred  
 
-# Testing the KNN Algorithm on the test dataset:
+# Testing the KNN Algorithm on the test dataset. Setting number of neighbours to 3:
 K = 3
 y_pred_scratch = KNN_from_scratch(normalized_x_train, y_train, normalized_x_test, K)
 print(y_pred_scratch)
 
 from sklearn.neighbors import KNeighborsClassifier
+# Creating a kNN object with K = 3 as an argument:
 knn = KNeighborsClassifier(K)
+# Fitting knn on the training set:
 knn.fit(normalized_x_train, y_train)
+# This does predictions on the normalized testing set:
 y_pred_sklearn = knn.predict(normalized_x_test)
 print(y_pred_sklearn)
-
+# Numpy method 'array_equal' returns a boolean; true is 2 arrays have the same number of dimensions and element:
 print(np.array_equal(y_pred_sklearn, y_pred_scratch))
 
 from sklearn.metrics import accuracy_score
+# Comparing the test set values with the predicted values to get the accuracy:
 print(f'The accuracy of our implementation is {accuracy_score(y_test, y_pred_scratch)}')
 print(f'The accuracy of sklearn implementation is {accuracy_score(y_test, y_pred_sklearn)}')
 
-# Performing Hyper-parameter Tuning using K-fold Cross Validation, choosing 4 splits:
+# Performing Hyper-parameter Tuning using K-fold Cross Validation, choosing 4 splits. The k in k Nearest 
+# Neighbours is a machine learning hyperparameter. A hyperparameter in a parameter that is already set before 
+# starting training on a data set - they can't be learned directly from the training process. 
+# Hyperparameter tuning involves tuning parameters as tuples so that a machine learning algorithm such as kNN
+# will perform well. https://medium.com/almabetter/cross-validation-and-hyperparameter-tuning-91626c757428:
 n_splits = 4 
 # 'kFold()' method divides the samples into different groups called 'folds':
 kf = KFold(n_splits = n_splits) 
@@ -268,22 +276,22 @@ kf = KFold(n_splits = n_splits)
 # Keeping track of the accuracy for each K value:
 accuracy_k = [] 
 # Search for the best value of K:
-k_values = list(range(1,95,1)) 
+k_values = list(range(1,140,1)) 
 
 # A 'for loop' to iterate through the K values to standardize the data:
 for k in k_values: 
   accuracy_fold = 0
-  # the elements here can be named anything but it helps to give a descriptive name:
-  for normalized_x_train_fold_idx, normalized_x_valid_fold_idx in kf.split(normalized_x_train): # Loop over the splits
-      normalized_x_train_fold = normalized_x_train[normalized_x_train_fold_idx] # fetch the values
+  # The elements here can be named anything but it helps readablilty to give a descriptive name:
+  for normalized_x_train_fold_idx, normalized_x_valid_fold_idx in kf.split(normalized_x_train): 
+      normalized_x_train_fold = normalized_x_train[normalized_x_train_fold_idx] 
       y_train_fold = y_train[normalized_x_train_fold_idx]
 
       normalized_x_test_fold = normalized_x_train[normalized_x_valid_fold_idx]
       y_valid_fold = y_train[normalized_x_valid_fold_idx]
       y_pred_fold = KNN_from_scratch(normalized_x_train_fold, y_train_fold, normalized_x_test_fold, k)
 
-      accuracy_fold += accuracy_score(y_pred_fold, y_valid_fold) # Accumulate the accuracy
-  accuracy_fold = accuracy_fold / n_splits # Divide by the number of splits
+      accuracy_fold += accuracy_score(y_pred_fold, y_valid_fold) 
+  accuracy_fold = accuracy_fold / n_splits 
   accuracy_k.append(accuracy_fold)
 # Creates a tuple with accuracy corresponding to k value:
 print(f'The accuracy for each K value was {list ( zip (accuracy_k, k_values))}') 
@@ -294,13 +302,13 @@ print(f'Best accuracy was {np.max(accuracy_k)}, which corresponds to a value of 
 X = df[["SepalLength", "SepalWidth", "PetalLength", "PetalWidth"]].values
 Y = df[['Species']].values
 # Creating an instance of labelencoder (part of the sklearn package).
-enc = LabelEncoder()
+#enc = LabelEncoder()
 # LabelEncoder.fit maps column strings to numerical values
-label_encoder = enc.fit(Y)
+#label_encoder = enc.fit(Y)
 # Assigns numerical values in the variable 'Y':
-Y = label_encoder.transform(YAMLError) + 1
+#Y = label_encoder.transform(YAMLError) + 1
 
-mean_vectors = []
-for cl in range(1,4):
-    mean_vectors.append(np.mean(X[Y==cl], axis=0))
-    print('Mean Vector class %s: %s\n' %(cl, mean_vectors[cl-1]))
+#mean_vectors = []
+#for cl in range(1,4):
+#    mean_vectors.append(np.mean(X[Y==cl], axis=0))
+#    print('Mean Vector class %s: %s\n' %(cl, mean_vectors[cl-1]))
