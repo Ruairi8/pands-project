@@ -124,7 +124,7 @@ from sklearn.model_selection import train_test_split , KFold
 x = df.iloc[:, :-1]
 y = df.iloc[:, -1]
 # split the data into training and testing sets:
-x_train, x_test, y_train, y_test= train_test_split(x, y, test_size= 0.2, shuffle= True, random_state= 0)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size= 0.2, shuffle= True, random_state= 0)
 # In numpy, '.asarray' method converts an input to an array. Unlike '.array', '.asarray' updates changes made to an array.
 x_train = np.asarray(x_train)
 y_train = np.asarray(y_train)
@@ -262,7 +262,7 @@ print(f'The accuracy of sklearn implementation is {accuracy_score(y_test, y_pred
 
 # Performing Hyper-parameter Tuning using K-fold Cross Validation, choosing 4 splits:
 n_splits = 4 
-# 
+# 'kFold()' method divides the samples into different groups called 'folds':
 kf = KFold(n_splits = n_splits) 
 
 # Keeping track of the accuracy for each K value:
@@ -270,10 +270,11 @@ accuracy_k = []
 # Search for the best value of K:
 k_values = list(range(1,95,1)) 
 
-# A 'for loop' to iterate through the K values:
+# A 'for loop' to iterate through the K values to standardize the data:
 for k in k_values: 
   accuracy_fold = 0
-  for normalized_x_train_fold_idx, normalized_x_valid_fold_idx in  kf.split(normalized_x_train): # Loop over the splits
+  # the elements here can be named anything but it helps to give a descriptive name:
+  for normalized_x_train_fold_idx, normalized_x_valid_fold_idx in kf.split(normalized_x_train): # Loop over the splits
       normalized_x_train_fold = normalized_x_train[normalized_x_train_fold_idx] # fetch the values
       y_train_fold = y_train[normalized_x_train_fold_idx]
 
@@ -282,10 +283,10 @@ for k in k_values:
       y_pred_fold = KNN_from_scratch(normalized_x_train_fold, y_train_fold, normalized_x_test_fold, k)
 
       accuracy_fold += accuracy_score(y_pred_fold, y_valid_fold) # Accumulate the accuracy
-  accuracy_fold = accuracy_fold/ n_splits # Divide by the number of splits
+  accuracy_fold = accuracy_fold / n_splits # Divide by the number of splits
   accuracy_k.append(accuracy_fold)
-
-print(f'The accuracy for each K value was {list ( zip (accuracy_k, k_values))}') #Creates a tuple with accuracy corresponding to k value
+# Creates a tuple with accuracy corresponding to k value:
+print(f'The accuracy for each K value was {list ( zip (accuracy_k, k_values))}') 
 print(f'Best accuracy was {np.max(accuracy_k)}, which corresponds to a value of K= {k_values[np.argmax(accuracy_k)]}')
 
 

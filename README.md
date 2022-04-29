@@ -1,6 +1,6 @@
 <h2><em>Analysis of the Iris data set</em></h2>
 
-<h4><em>Author:</em></h4> Ruairi McCool
+<h4><em>Author:</em> Ruairi McCool</h4> 
 
 In this project I will output summaries of the variables involved to a text file and do meaningful analyses using python on the dataset using some of it's built-in libraries. Visual distributions can be created using matplotlib and pandas libraries, for example. I could also divide the data into training and testing groups, as is done in "k nearest neighbours" in machine learning. I will also provide a written summary of the output and the conclusions I have made.
 What can be gained by performing analysis and outputting mathematical statistics of the variables in this 
