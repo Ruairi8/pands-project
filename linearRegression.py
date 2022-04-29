@@ -14,6 +14,9 @@ x_var = iris["1"]
 x_var2 = x_var.values.reshape(-1, 1)
 y_var = iris[" 2"]
 y_var2 = y_var.values.reshape(-1, 1)
+# 'train_test_split' method to randomly assign data points to training and testing groups; in this case x_training
+# and x_testing is from the sepal length column and the y training and testing groups are taken from the sepal
+# width column:
 x_training, x_testing, y_training, y_testing = train_test_split(x_var2, y_var2, random_state=0)
 
 # Creating a linear regression object setting it equal to a variable, z:
@@ -24,6 +27,21 @@ linearReg = z.fit(x_training, y_training)
 # and independent variables. P-values for coefficients can tell if the relationships observed in training and
 # testing sets are also true for the entire dataset:
 print("Coefficient: " + str(linearReg.coef_))
+# The intercept is where the regression line hits the y axis:
 print("Intercept: " + str(linearReg.intercept_))
-print("Training R-squared value: " + str(linearReg.score(x_training, y_training)))
-print("Testing R-squared value: " + str(linearReg.score(x_testing, y_testing)))
+# R-squared is the percentage of a dependent variable variation.
+print("Training R-squared value, Sepal: " + str(linearReg.score(x_training, y_training)))
+print("Testing R-squared value, Sepal: " + str(linearReg.score(x_testing, y_testing)))
+
+
+x_var = iris[" 3"]
+x_var2 = x_var.values.reshape(-1, 1)
+y_var = iris[" 4"]
+y_var2 = y_var.values.reshape(-1, 1)
+x_training, x_testing, y_training, y_testing = train_test_split(x_var2, y_var2, random_state=0)
+z = LinearRegression()
+linearReg = z.fit(x_training, y_training)
+print("Coefficient: " + str(linearReg.coef_))
+print("Intercept: " + str(linearReg.intercept_))
+print("Training R-squared value, Petal: " + str(linearReg.score(x_training, y_training)))
+print("Testing R-squared value, Petal: " + str(linearReg.score(x_testing, y_testing)))

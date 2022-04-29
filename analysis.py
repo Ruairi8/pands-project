@@ -142,6 +142,7 @@ normalized_x_train = scaler.transform(x_train)
 normalized_x_test = scaler.transform(x_test) 
 print('x train before Normalization')
 print(x_train[0:5])
+# We can see that the normalization process scalably lowered the sizes of the floating point values in the data set:
 print('\nx train after Normalization')
 print(normalized_x_train[0:5])
 
@@ -264,7 +265,7 @@ from sklearn.metrics import accuracy_score
 print(f'The accuracy of our implementation is {accuracy_score(y_test, y_pred_scratch)}')
 print(f'The accuracy of sklearn implementation is {accuracy_score(y_test, y_pred_sklearn)}')
 
-# Performing Hyper-parameter Tuning using K-fold Cross Validation, choosing 4 splits. The k in k Nearest 
+# Performing Hyperparameter Tuning using K-fold Cross Validation, choosing 4 splits. The k in k Nearest 
 # Neighbours is a machine learning hyperparameter. A hyperparameter in a parameter that is already set before 
 # starting training on a data set - they can't be learned directly from the training process. 
 # Hyperparameter tuning involves tuning parameters as tuples so that a machine learning algorithm such as kNN
@@ -282,19 +283,22 @@ k_values = list(range(1,140,1))
 for k in k_values: 
   accuracy_fold = 0
   # The elements here can be named anything but it helps readablilty to give a descriptive name:
-  for normalized_x_train_fold_idx, normalized_x_valid_fold_idx in kf.split(normalized_x_train): 
-      normalized_x_train_fold = normalized_x_train[normalized_x_train_fold_idx] 
-      y_train_fold = y_train[normalized_x_train_fold_idx]
+  for normalized_x_train_fold_index, normalized_x_valid_fold_index in kf.split(normalized_x_train): 
+      normalized_x_train_fold = normalized_x_train[normalized_x_train_fold_index] 
+      y_train_fold = y_train[normalized_x_train_fold_index]
 
-      normalized_x_test_fold = normalized_x_train[normalized_x_valid_fold_idx]
-      y_valid_fold = y_train[normalized_x_valid_fold_idx]
+      normalized_x_test_fold = normalized_x_train[normalized_x_valid_fold_index]
+      y_valid_fold = y_train[normalized_x_valid_fold_index]
+      # This function was defined above: 
       y_pred_fold = KNN_from_scratch(normalized_x_train_fold, y_train_fold, normalized_x_test_fold, k)
 
       accuracy_fold += accuracy_score(y_pred_fold, y_valid_fold) 
+  # Diving by the number of splits to get an accuracy and then appending it to the empty array 'accuracy_k':
   accuracy_fold = accuracy_fold / n_splits 
   accuracy_k.append(accuracy_fold)
 # Creates a tuple with accuracy corresponding to k value:
 print(f'The accuracy for each K value was {list ( zip (accuracy_k, k_values))}') 
+# 'np.argmax()' outputs the maximum element of an array:
 print(f'Best accuracy was {np.max(accuracy_k)}, which corresponds to a value of K= {k_values[np.argmax(accuracy_k)]}')
 
 
@@ -302,13 +306,13 @@ print(f'Best accuracy was {np.max(accuracy_k)}, which corresponds to a value of 
 X = df[["SepalLength", "SepalWidth", "PetalLength", "PetalWidth"]].values
 Y = df[['Species']].values
 # Creating an instance of labelencoder (part of the sklearn package).
-#enc = LabelEncoder()
-# LabelEncoder.fit maps column strings to numerical values
-#label_encoder = enc.fit(Y)
+enc = LabelEncoder()
+# 'LabelEncoder.fit' maps column strings to numerical values
+label_encoder = enc.fit(Y)
 # Assigns numerical values in the variable 'Y':
-#Y = label_encoder.transform(YAMLError) + 1
+Y = label_encoder.transform(YAMLError) + 1
 
-#mean_vectors = []
-#for cl in range(1,4):
-#    mean_vectors.append(np.mean(X[Y==cl], axis=0))
-#    print('Mean Vector class %s: %s\n' %(cl, mean_vectors[cl-1]))
+mean_vectors = []
+for cl in range(1,4):
+    mean_vectors.append(np.mean(X[Y==cl], axis=0))
+    print('Mean Vector class %s: %s\n' %(cl, mean_vectors[cl-1]))
