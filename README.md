@@ -1,3 +1,14 @@
+# Repository Contents: 
+- Python file 'analysis.py' used to analyse the Iris dataset
+- Python file 'histogram.py' to output histogram visualizations of data
+- 11 .png files containing histogram and scatter plot visualizations of the data
+- File containing the Iris dataset, 'iris.data'
+- Python file where linear regression analysis done, 'linearRegression.py'
+- 'scatterplot1' and 'scatterPetal' files used to create scatter plot visualizations
+
+# Requirements:
+- Python 3.8
+
 <h2><em>Analysis of the Iris data set</em></h2>
 
 <h4><em>Author:</em> Ruairi McCool</h4> 
