@@ -59,7 +59,7 @@ d2 = np.max(iris_versicolor)
 
 
 # https://eldoyle.github.io/PythonIntro/08-ReadingandWritingTextFiles/
-filename = "VariableSummaries.txt"
+filename = "V_VariableSummaries.txt"
 file = open(filename, 'w')
 # .write() only takes a string as an argument. https://stackoverflow.com/questions/41454921/typeerror-write-argument-must-be-str-not-list
 file.write("A summary of the variables - Iris Setosa, Iris Virginica & Iris Versicolor\n")
@@ -300,19 +300,3 @@ for k in k_values:
 print(f'The accuracy for each K value was {list ( zip (accuracy_k, k_values))}') 
 # 'np.argmax()' outputs the maximum element of an array:
 print(f'Best accuracy was {np.max(accuracy_k)}, which corresponds to a value of K= {k_values[np.argmax(accuracy_k)]}')
-
-
-# Experimenting with code from https://sebastianraschka.com/Articles/2014_python_lda.html#lda-in-5-steps
-X = df[["SepalLength", "SepalWidth", "PetalLength", "PetalWidth"]].values
-Y = df[['Species']].values
-# Creating an instance of labelencoder (part of the sklearn package).
-enc = LabelEncoder()
-# 'LabelEncoder.fit' maps column strings to numerical values
-label_encoder = enc.fit(Y)
-# Assigns numerical values in the variable 'Y':
-Y = label_encoder.transform(YAMLError) + 1
-
-mean_vectors = []
-for cl in range(1,4):
-    mean_vectors.append(np.mean(X[Y==cl], axis=0))
-    print('Mean Vector class %s: %s\n' %(cl, mean_vectors[cl-1]))

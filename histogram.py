@@ -2,7 +2,6 @@
 # https://matplotlib.org/2.0.2/users/pyplot_tutorial.html
 # Importing Python library matplotlib.pyplot to create some images or plots; it works somewhat like MATLAB. 
 # Pyplot functions can makes many changes to a plot:
-from binascii import a2b_qp
 import matplotlib.pyplot as plt
 import pandas as pd
 Iris = pd.read_csv('iris.data')
@@ -29,18 +28,21 @@ plt.ylabel('Count')
 plt.savefig('histogram1.png')
 # '.close()' methods deletes the memory in pyplot of the last image created:
 plt.close()
+
 plt.hist(b, bins=25, color='black')
 plt.title('Sepal Width Histogram')
 plt.xlabel('Sepal_Width_cm')
 plt.ylabel('Count')
 plt.savefig('histogram2.png')
 plt.close()
+
 plt.hist(c, bins=25, color='yellow')
 plt.title('Petal Length Histogram')
 plt.xlabel('Petal_Lenght_cm')
 plt.ylabel('Count')
 plt.savefig('histogram3.png')
 plt.close()
+
 plt.hist(d, bins=25, color='indigo')
 plt.title('Petal Width Histogram')
 plt.xlabel('Petal_Width_cm')
@@ -54,12 +56,14 @@ plt.xlabel('Sepal_Length_cm')
 plt.ylabel('Count')
 plt.savefig('histogram5.png')
 plt.close()
+
 plt.hist(Vers_length, bins=25, color='red')
 plt.title('Versicolor Sepal Length Histogram')
 plt.xlabel('Sepal_Length_cm')
 plt.ylabel('Count')
 plt.savefig('histogram6.png')
 plt.close()
+
 plt.hist(Virg_length, bins=25, color='red')
 plt.title('Virginica Sepal Length Histogram')
 plt.xlabel('Sepal_Length_cm')
